@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playlist Generator</title>
+    <!-- Voeg Google Fonts toe voor Madimi One -->
+    <link href="https://fonts.googleapis.com/css2?family=Madim+One&display=swap" rel="stylesheet">
+    <!-- Voeg Tailwind CSS toe -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Pas de lettertypefamilie aan op de body -->
+    <style>
+        body {
+            font-family: 'Madim One', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 min-h-screen flex flex-col items-center justify-center">
+
+    <!-- Spotify Logo -->
+    <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" alt="Spotify Logo" class="w-24 h-auto mb-6">
+
+    <!-- In index.html -->
+    <a href="/login" class="text-white">Login met Spotify</a>
+
+
+
+<br>
+
+<!-- Titel en knop -->
+<h1 class="text-3xl font-semibold mb-6 text-green-500">Playlist naam Generator</h1>
+
+<div class="flex flex-col items-center justify-center h-full">
+    <h3 class="text-xl font-semibold mb-6 text-white">Genre</h3>
+    <select id="genreDropdown" class="bg-white p-2 rounded-md shadow-md mb-6 text-gray-500 italic">
+        <!-- Options worden hier dynamisch ingevuld -->
+    </select>
+    <h3 class="text-xl font-semibold mb-6 text-white">Extra instructie bijvoorbeeld: een gelegenheid of gevoel.</h3>
+    <input type="text" id="extraInstruction" placeholder="roadtrip / verdrietig" class="bg-white p-2 rounded-md shadow-md mb-6 text-gray-500 italic">
+</div>
+
+
+
+
+<br>
+
+<!-- Playlist naam en dropdown -->
+<div class="flex items-center space-x-4">
+    <div id="playlistName" class="bg-white p-4 rounded-md shadow-md mb-6 text-gray-500 italic">Playlist naam wordt hier weergegeven</div>
+</div>
+
+<button id="generateButton" class="bg-green-500 text-white px-4 py-2 rounded-md shadow-md">Genereer playlistnaam</button>
+
+
+<script src="script.js"></script>
+</body>
+
+</html>
+
+
