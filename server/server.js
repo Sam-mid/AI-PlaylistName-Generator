@@ -27,24 +27,38 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '../client')));
 app.use(cors());
 
+// Endpoint om de chatgeschiedenis van de client op te halen
+app.get('/chathistory', (req, res) => {
+    try {
+        const chatHistory = req.query.chatHistory;
+        res.json({ chatHistory });
+    } catch (error) {
+        console.error("Er is een fout opgetreden:", error);
+        res.status(500).json({ error: "Er is een fout opgetreden bij het ophalen van de chatgeschiedenis." });
+    }
+});
+
+// Endpoint voor het ophalen van een playlistnaam
 app.get('/playlistname', async (req, res) => {
     try {
         const genre = req.query.genre; // Haal het geselecteerde genre op uit de query parameters
         const extraInstruction = req.query.instruction || ""; // Haal de extra instructie op uit de query parameters, standaard leeg als niet opgegeven
-        const playlistName = await model.invoke(
-            `je bent een robot met als enige taak een  naam te verzinnen voor een playlist. De playlist heeft het genre: ${genre}.
-            extra instructies: zorg ervoor dat je niets meer dan alleen de naam verteld en maar een antwoord per keer. De naam van het genre hoeft niet verplicht in de naam van de playlist te zitten.
-            Een instructie die de gebruiker invoert (houd hier extra rekening mee): ${extraInstruction}. 
-            voorbeeld antwoord voor een pop playlist: "pop heaven"`);
+        const chatHistory = req.query.chatHistory || []; // Haal de chatgeschiedenis op uit de query parameters, standaard leeg als niet opgegeven
 
+        const playlistName = await model.invoke(
+            `Je bent een robot met als enige taak een naam te verzinnen voor een playlist. De playlist heeft het genre: ${genre}.
+            Extra instructies: zorg ervoor dat je niets meer dan alleen de naam verteld en maar een antwoord per keer. De naam van het genre hoeft niet verplicht in de naam van de playlist te zitten.
+            Een instructie die de gebruiker invoert (houd hier extra rekening mee): ${extraInstruction}. 
+            Voorbeeld antwoord voor een pop playlist: "pop heaven"`);
 
         console.log(playlistName.content);
-        res.json({ playlistName: playlistName.content }); // Stuur de playlistnaam als JSON-object terug
+        res.json({ playlistName: playlistName.content, chatHistory }); // Stuur de playlistnaam en chatgeschiedenis als JSON-object terug
     } catch (error) {
         console.error("Er is een fout opgetreden:", error);
         res.status(500).json({ error: "Er is een fout opgetreden bij het ophalen van de playlistnaam." });
     }
 });
+
 
 
 // Autorisatie endpoint

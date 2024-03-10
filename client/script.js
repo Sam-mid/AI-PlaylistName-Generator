@@ -3,6 +3,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     const genreDropdown = document.getElementById('genreDropdown');
     const extraInstructionInput = document.getElementById('extraInstruction');
     const generateButton = document.getElementById('generateButton');
+    const chatHistoryElement = document.getElementById('chatHistory'); // Voeg de chatgeschiedenis div toe
 
     generateButton.addEventListener('click', async () => {
         try {
@@ -18,6 +19,9 @@ window.addEventListener('DOMContentLoaded', async () => {
             const data = await response.json();
             const playlistName = data.playlistName;
             playlistNameElement.textContent = `Playlist naam: ${playlistName}`;
+
+            // Voeg de gegenereerde playlistnaam toe aan de chatgeschiedenis
+            addToChatHistory(`Playlist naam: ${playlistName}`);
         } catch (error) {
             console.error('Er is een fout opgetreden bij het genereren van de playlistnaam:', error);
         } finally {
@@ -36,6 +40,50 @@ window.addEventListener('DOMContentLoaded', async () => {
         }
         return null;
     }
+
+    // Functie om de chatgeschiedenis op te halen uit localStorage
+    function getChatHistory() {
+        const chatHistory = localStorage.getItem('chatHistory');
+        return chatHistory ? JSON.parse(chatHistory) : []; // Zorg ervoor dat er altijd een array wordt geretourneerd
+    }
+
+    // Functie om de chatgeschiedenis weer te geven in het chatgeschiedenis element
+    function displayChatHistory() {
+        const chatHistory = getChatHistory();
+        chatHistoryElement.innerHTML = ''; // Clear existing content
+
+        if (Array.isArray(chatHistory)) { // Controleer of het een array is voordat we forEach gebruiken
+            chatHistory.forEach(message => {
+                const messageElement = document.createElement('div');
+                messageElement.textContent = message;
+                chatHistoryElement.appendChild(messageElement);
+            });
+        }
+    }
+
+    // Functie om een bericht toe te voegen aan de chatgeschiedenis en deze op te slaan in localStorage
+    function addToChatHistory(message) {
+        let chatHistory = getChatHistory(); // Haal de chatgeschiedenis op
+
+        if (!Array.isArray(chatHistory)) { // Controleer of de chatgeschiedenis een array is
+            chatHistory = []; // Als het geen array is, maak dan een nieuwe array
+        }
+
+        chatHistory.push(message); // Voeg het bericht toe aan de chatgeschiedenis
+        localStorage.setItem('chatHistory', JSON.stringify(chatHistory)); // Sla de chatgeschiedenis op in localStorage
+        displayChatHistory(); // Update de weergave van de chatgeschiedenis
+    }
+
+    // Roep de functie aan om de chatgeschiedenis weer te geven wanneer de pagina geladen is
+    displayChatHistory();
+
+    // Event listener voor de knop om de chatgeschiedenis te verwijderen
+    const clearHistoryButton = document.getElementById('clearHistoryButton');
+
+    clearHistoryButton.addEventListener('click', () => {
+        localStorage.removeItem('chatHistory'); // Verwijder de chatgeschiedenis uit de lokale opslag
+        displayChatHistory(); // Leeg de chatgeschiedenis op de pagina
+    });
 });
 
 
