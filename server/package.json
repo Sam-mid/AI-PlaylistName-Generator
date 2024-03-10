@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "dev": "server.js"
+    "dev": "node --env-file .env server.js"
   },
   "type": "module",
   "author": "",
@@ -20,4 +20,3 @@
     "readable-stream": "^4.5.2"
   }
 }
-
