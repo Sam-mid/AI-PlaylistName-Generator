@@ -42,11 +42,16 @@ Dit is een webapplicatie waarmee je automatisch namen voor afspeellijsten kunt g
     ```
 
 ## Gebruik
+- navigeer eerst naar de server directory:
+
+  ```bash
+    cd server
+    ```
 
 - Start de server met het volgende commando:
 
     ```bash
-    npm start
+    npm run dev
     ```
 
 - Open een webbrowser en ga naar http://localhost:3000 om de applicatie te gebruiken.
