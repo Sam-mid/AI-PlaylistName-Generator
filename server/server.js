@@ -7,6 +7,7 @@ import axios from 'axios'; // Importeer de axios module voor het maken van HTTP-
 import querystring from 'querystring'; // Importeer de querystring module om queryparameters te formatteren
 import { ChatOpenAI } from "@langchain/openai";
 
+
 const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 
@@ -64,7 +65,7 @@ app.get('/playlistname', async (req, res) => {
 // Autorisatie endpoint
 app.get('/login', (req, res) => {
     const clientId = process.env.SPOTIFY_CLIENT_ID;
-    const redirectUri = encodeURIComponent('http://localhost:3000/callback');
+    const redirectUri = encodeURIComponent(`http://${req.headers.host}/callback`);
     const scope = 'user-read-private user-read-email'; // Voeg hier de gewenste scopes toe
     const authorizationUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&scope=${scope}`;
     res.redirect(authorizationUrl);
@@ -76,7 +77,7 @@ let accessToken = '';
 // Endpoint voor de callback
 app.get('/callback', (req, res) => {
     const { code } = req.query;
-    const redirect_uri = 'http://localhost:3000/callback'; // Update de redirect_uri indien nodig
+    const redirect_uri = `http://${req.headers.host}/callback`;
 
     if (!code) {
         res.status(400).json({ error: 'Authorization code is missing.' });
@@ -105,8 +106,8 @@ app.get('/callback', (req, res) => {
             // Sla de access token op in een cookie of localStorage
             res.cookie('accessToken', accessToken); // Of gebruik localStorage.setItem('accessToken', accessToken);
 
-            // Stuur de gebruiker terug naar localhost:3000
-            res.redirect('http://localhost:3000');
+            // Stuur de gebruiker terug naar de startpagina van de applicatie
+            res.redirect('/');
         })
         .catch(error => {
             // Verwerk eventuele fouten bij het inwisselen van de autorisatiecode
