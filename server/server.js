@@ -65,7 +65,7 @@ app.get('/playlistname', async (req, res) => {
 // Autorisatie endpoint
 app.get('/login', (req, res) => {
     const clientId = process.env.SPOTIFY_CLIENT_ID;
-    const redirectUri = encodeURIComponent(`http://${req.headers.host}/callback`);
+    const redirectUri = encodeURIComponent(`https://${req.headers.host}/callback`);
     const scope = 'user-read-private user-read-email'; // Voeg hier de gewenste scopes toe
     const authorizationUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&scope=${scope}`;
     res.redirect(authorizationUrl);
@@ -77,7 +77,7 @@ let accessToken = '';
 // Endpoint voor de callback
 app.get('/callback', (req, res) => {
     const { code } = req.query;
-    const redirect_uri = `http://${req.headers.host}/callback`;
+    const redirect_uri = `https://${req.headers.host}/callback`;
 
     if (!code) {
         res.status(400).json({ error: 'Authorization code is missing.' });
