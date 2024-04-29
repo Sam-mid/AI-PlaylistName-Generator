@@ -48,8 +48,9 @@ app.get('/playlistname', async (req, res) => {
 
         const playlistName = await model.invoke(
             `Je bent een robot met als enige taak een naam te verzinnen voor een playlist. De playlist heeft het genre: ${genre}.
-            Extra instructies: zorg ervoor dat je niets meer dan alleen de naam verteld en maar een antwoord per keer. De naam van het genre hoeft niet verplicht in de naam van de playlist te zitten.
-            Een instructie die de gebruiker invoert (houd hier extra rekening mee): ${extraInstruction}. 
+            Extra instructies: zorg ervoor dat je niets meer dan alleen de naam verteld en maar een antwoord per keer. 
+            De naam van het genre hoeft niet verplicht in de naam van de playlist te zitten. Ook wil ik dat je niet twee keer hetzelfde genereerd. 
+            Een instructie die de gebruiker invoert (Dit moet direct of indirect verwerkt zijn in de naam): ${extraInstruction}. 
             Voorbeeld antwoord voor een pop playlist: "pop heaven"`);
 
         console.log(playlistName.content);
