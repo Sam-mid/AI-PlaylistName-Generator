@@ -3,8 +3,8 @@ import cors from 'cors';
 import path from 'path';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
-import axios from 'axios'; // Importeer de axios module voor het maken van HTTP-verzoeken
-import querystring from 'querystring'; // Importeer de querystring module om queryparameters te formatteren
+import axios from 'axios';
+import querystring from 'querystring';
 import { ChatOpenAI } from "@langchain/openai";
 
 
@@ -28,23 +28,13 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '../client')));
 app.use(cors());
 
-// Endpoint om de chatgeschiedenis van de client op te halen
-app.get('/chathistory', (req, res) => {
-    try {
-        const chatHistory = req.query.chatHistory;
-        res.json({ chatHistory });
-    } catch (error) {
-        console.error("Er is een fout opgetreden:", error);
-        res.status(500).json({ error: "Er is een fout opgetreden bij het ophalen van de chatgeschiedenis." });
-    }
-});
 
-// Endpoint voor het ophalen van een playlistnaam
+//ophalen van een playlistnaam
 app.get('/playlistname', async (req, res) => {
     try {
-        const genre = req.query.genre; // Haal het geselecteerde genre op uit de query parameters
-        const extraInstruction = req.query.instruction || ""; // Haal de extra instructie op uit de query parameters, standaard leeg als niet opgegeven
-        const chatHistory = req.query.chatHistory || []; // Haal de chatgeschiedenis op uit de query parameters, standaard leeg als niet opgegeven
+        const genre = req.query.genre; // Haal het genre op
+        const extraInstruction = req.query.instruction || ""; // Haal de extra instructie op.
+        const chatHistory = req.query.chatHistory || []; // Haal de chatgeschiedenis op uit.
 
         const playlistName = await model.invoke(
             `Je bent een robot met als enige taak een naam te verzinnen voor een playlist. De playlist heeft het genre: ${genre}.
@@ -61,7 +51,16 @@ app.get('/playlistname', async (req, res) => {
     }
 });
 
-
+// chatgeschiedenis  op halen
+app.get('/chathistory', (req, res) => {
+    try {
+        const chatHistory = req.query.chatHistory;
+        res.json({ chatHistory });
+    } catch (error) {
+        console.error("Er is een fout opgetreden:", error);
+        res.status(500).json({ error: "Er is een fout opgetreden bij het ophalen van de chatgeschiedenis." });
+    }
+});
 
 // Autorisatie endpoint
 app.get('/login', (req, res) => {

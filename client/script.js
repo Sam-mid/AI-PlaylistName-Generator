@@ -25,7 +25,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         } catch (error) {
             console.error('Er is een fout opgetreden bij het genereren van de playlistnaam:', error);
         } finally {
-            // Activeer de generatieknop na het ontvangen van het antwoord van de server
+            // Activeer de knop na het ontvangen van het antwoord van de server
             generateButton.disabled = false;
             generateButton.textContent = 'Genereer playlistnaam'; // Verander de tekst van de knop terug naar 'Genereer playlistnaam'
         }
