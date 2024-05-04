@@ -29,22 +29,31 @@ app.use(express.static(path.join(__dirname, '../client')));
 app.use(cors());
 
 
-//ophalen van een playlistnaam
+// Endpoint voor het ophalen van playlistnamen
 app.get('/playlistname', async (req, res) => {
     try {
-        const genre = req.query.genre; // Haal het genre op
-        const extraInstruction = req.query.instruction || ""; // Haal de extra instructie op.
-        const chatHistory = req.query.chatHistory || []; // Haal de chatgeschiedenis op uit.
+        // Haal de gebruikersrol op (bijvoorbeeld moderator, participant, etc.)
+        const userRole = req.query.role || "participant"; // Default: participant
 
-        const playlistName = await model.invoke(
-            `Je bent een robot met als enige taak een naam te verzinnen voor een playlist. De playlist heeft het genre: ${genre}.
+        // Definieer de initiële prompt (systeem)
+        const systemPrompt = `Je bent een robot met als enige taak een naam te verzinnen voor een playlist. De playlist heeft het genre: ${genre}.
             Extra instructies: zorg ervoor dat je niets meer dan alleen de naam verteld en maar een antwoord per keer. 
             De naam van het genre hoeft niet verplicht in de naam van de playlist te zitten. Ook wil ik dat je niet twee keer hetzelfde genereerd. 
             Een instructie die de gebruiker invoert (Dit moet direct of indirect verwerkt zijn in de naam): ${extraInstruction}. 
-            Voorbeeld antwoord voor een pop playlist: "pop heaven"`);
+            Voorbeeld antwoord voor een pop playlist: "pop heaven"`;
 
-        console.log(playlistName.content);
-        res.json({ playlistName: playlistName.content, chatHistory }); // Stuur de playlistnaam en chatgeschiedenis als JSON-object terug
+        // Simulatie van het genereren van een afspeellijstnaam met behulp van het model
+        const playlistName = { content: "Playlist Naam" };
+
+        // Definieer de reactie van de AI
+        const aiResponse = playlistName.content;
+
+        // Stuur de rol en de bijbehorende gegevens terug naar de client
+        res.json({
+            system: systemPrompt, // Initiële prompt (systeem)
+            AI: aiResponse, // Reactie van de AI
+            userRole: userRole // Gebruikersrol
+        });
     } catch (error) {
         console.error("Er is een fout opgetreden:", error);
         res.status(500).json({ error: "Er is een fout opgetreden bij het ophalen van de playlistnaam." });
