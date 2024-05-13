@@ -87,15 +87,14 @@ window.addEventListener('DOMContentLoaded', async () => {
 });
 
 
-
 window.addEventListener('DOMContentLoaded', async () => {
     // Functie om de access token uit de cookie te halen
     function getAccessToken() {
         const cookies = document.cookie.split('; ');
         for (const cookie of cookies) {
             const [name, value] = cookie.split('=');
-            if (name === 'accessToken') {
-                return value;
+            if (name.trim() === 'accessToken') { // Controleer ook op spaties rond de naam van de cookie
+                return decodeURIComponent(value); // decodeURIComponent() gebruiken om URL-gecodeerde waarden te decoderen
             }
         }
         return null;
@@ -106,7 +105,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         const accessToken = getAccessToken();
         if (!accessToken) {
             console.error('Access token not found in cookie.');
-            return;
+            return null; // Retourneer null in plaats van undefined om consistente gegevensretournering te waarborgen
         }
 
         try {
@@ -115,6 +114,9 @@ window.addEventListener('DOMContentLoaded', async () => {
                     'Authorization': `Bearer ${accessToken}`
                 }
             });
+            if (!response.ok) {
+                throw new Error(`Failed to fetch genres: ${response.statusText}`);
+            }
             const data = await response.json();
             return data.categories.items;
         } catch (error) {

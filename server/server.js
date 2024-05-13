@@ -115,6 +115,7 @@ app.get('/callback', (req, res) => {
             res.status(500).json({ error: "Er is een fout opgetreden bij het inwisselen van de autorisatiecode." });
         });
 });
+;
 
 
 
